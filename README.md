@@ -44,7 +44,7 @@ struct ContentView: View {
 ### NavigationRootView
 - Navigation Stack 에 가장 하단 있는 View 이다.
 - Dialog 를 표기하는 View 이다.
-- fullScreenCover(isPresented) 를 통해 새로운 View 로 이동 시 이동한 View 에 NavigationRootView 로 구현되어야 Dialog 가 정상적으로 나타난다. 
+- fullScreenCover(isPresented) 를 통해 새로운 View 로 이동 시 이동된 View 를 NavigationRootView 로 구현되어야 Dialog 가 정상적으로 나타난다. 
 
 ```swift
 struct NavigationRootView<T: View>: View {
@@ -90,7 +90,7 @@ struct NavigationRootView<T: View>: View {
 ```
 
 - 사용법
-```
+```swift
 struct ContentView: View {
     
     @EnvironmentObject var dialogData: DialogData
