@@ -10,34 +10,19 @@ import SwiftUI
 struct AsuDialog: View {
     
     @EnvironmentObject var dialogData: DialogData
-    
-    @State var title: String
-    @State var contents: String = ""
-    @State var highlightTexts: [String]
-    @State var cancelBtnTitle: String
-    @State var okBtnTitle: String
-    private var dissmissCallback: ((String?) -> Void)?
-    var isCancel: Bool = false
     var model: DialogModel
     
     init(model: DialogModel) {
-        self.title = model.title
-        self.contents = model.contents
-        self.highlightTexts = model.highlightTexts
-        self.cancelBtnTitle = model.cancelBtnTitle
-        self.okBtnTitle = model.okBtnTitle
-        self.dissmissCallback = model.dissmissCallback
-        self.isCancel = model.cancel
         self.model = model
         
-        assert(!self.okBtnTitle.isEmpty)
+        assert(!self.model.okBtnTitle.isEmpty)
     }
     
     var body: some View {
         ZStack {
             Color(asu: .backgroundDimmed).ignoresSafeArea()
                 .onTapGesture {
-                    if isCancel {
+                    if model.cancelable {
                         Task { dialogData.show = false }
                     }
                 }
@@ -45,16 +30,17 @@ struct AsuDialog: View {
             VStack(spacing: 0) {
                 
                 // MARK: - Title
-                if !title.isEmpty {
-                    Text(title)
+                if !model.title.isEmpty {
+                    Text(model.title)
                         .foregroundColor(asu: .textStrong)
                         .asuFont(.title3)
                         .padding(.bottom, 12)
                 }
                 
                 // MARK: - Text
-                if !contents.isEmpty {
-                    HighlightedText(fullText: contents, highlightedTexts: highlightTexts)
+                if !model.contents.isEmpty {
+                    HighlightedText(fullText: model.contents,
+                                    highlightedTexts: model.highlightTexts)
                         .asuFont(.body2)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 20)
@@ -64,13 +50,13 @@ struct AsuDialog: View {
                 HStack(spacing: 10) {
                     
                     // MARK: - cancel Button
-                    if !cancelBtnTitle.isEmpty {
-                        PrimaryLineButton(title: cancelBtnTitle,
+                    if !model.cancelBtnTitle.isEmpty {
+                        PrimaryLineButton(title: model.cancelBtnTitle,
                                           size: .middle,
                                           actionType: .constant(.default),
                                           iconType: .none,
                                           action: {
-                            if let dissmissCallback = dissmissCallback {
+                            if let dissmissCallback = model.dissmissCallback {
                                 dissmissCallback(nil)
                             } else {
                                 Task { dialogData.show = false }
@@ -79,13 +65,13 @@ struct AsuDialog: View {
                     }
                     
                     // MARK: - confirm Button
-                    PrimaryButton(title: okBtnTitle,
+                    PrimaryButton(title: model.okBtnTitle,
                                   size: .middle,
                                   actionType: .constant(.default),
                                   iconType: .none,
                                   action: {
-                        if let dissmissCallback = dissmissCallback {
-                            dissmissCallback(okBtnTitle)
+                        if let dissmissCallback = model.dissmissCallback {
+                            dissmissCallback(model.okBtnTitle)
                         } else {
                             Task { dialogData.show = false }
                         }

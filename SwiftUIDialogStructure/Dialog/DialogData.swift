@@ -30,7 +30,7 @@ struct DialogModel {
     let highlightTexts: [String]
     let cancelBtnTitle: String
     let okBtnTitle: String
-    let cancel: Bool
+    let cancelable: Bool
     let dissmissCallback: ((String?) -> Void)?
     let uuid = UUID().uuidString
     
@@ -39,7 +39,7 @@ struct DialogModel {
          highlightTexts: [String] = [],
          cancelBtnTitle: String = "",
          okBtnTitle: String,
-         cancel: Bool = true,
+         cancelable: Bool = true,
          dissmissCallback: ((String?) -> Void)? = nil) {
         
         self.title = title
@@ -48,7 +48,7 @@ struct DialogModel {
         self.cancelBtnTitle = cancelBtnTitle
         self.okBtnTitle = okBtnTitle
         self.dissmissCallback = dissmissCallback
-        self.cancel = cancel
+        self.cancelable = cancelable
     }
     
     static var mock: Self {
