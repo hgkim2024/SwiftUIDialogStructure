@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct SwiftUIDialogStructureApp: App {
+    
+    @StateObject var dialogData = DialogData.shared
+    @StateObject var navigationData = NavigationData.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(dialogData)
+                .environmentObject(navigationData)
         }
     }
 }
